@@ -5,14 +5,15 @@ import {
   shortenAddress,
   textStyle,
   useTheme,
+  Link
 } from '@1hive/1hive-ui'
-import ProposalIcon from '@components/ProposalIcon'
+import ProposalIcon from '../ProposalIcon'
 
-import { convertToString } from '@/types'
-import { getProfileForAccount } from '@lib/profile'
-import { dateFormat } from '@utils/date-utils'
-import { addressesEqual } from '@utils/web3-utils'
-import { ZERO_ADDR } from '@/constants'
+import { convertToString } from '../../types'
+import { getProfileForAccount } from '../../lib/profile'
+import { dateFormat } from '../../utils/date-utils'
+import { addressesEqual } from '../../utils/web3-utils'
+import { ZERO_ADDR } from '../../constants'
 
 const addressCache = new Map()
 
@@ -54,23 +55,29 @@ function ProposalCreator({ proposal }) {
         display: flex;
       `}
     >
-      <div>
-        {profile?.image ? (
-          <img
-            src={profile.image}
-            height="43"
-            width="43"
-            alt=""
-            css={`
-              border-radius: 50%;
-              display: block;
-              object-fit: cover;
-            `}
-          />
-        ) : (
-          <EthIdenticon address={proposal.creator} radius={50} scale={1.8} />
-        )}
-      </div>
+      <Link href={`/#/profile?account=${proposal.creator}`} external={false}>
+        <div>
+          {profile?.image ? (
+            <img
+              src={profile.image}
+              height="43"
+              width="43"
+              alt=""
+              css={`
+                border-radius: 50%;
+                display: block;
+                object-fit: cover;
+              `}
+            />
+          ) : (
+            <EthIdenticon
+              address={proposal.creator}
+              radius={50}
+              scale={1.8}
+            />
+          )}
+        </div>
+      </Link>
       <div
         css={`
           margin-left: ${1 * GU}px;
@@ -86,15 +93,24 @@ function ProposalCreator({ proposal }) {
             ProposalType
           ) : (
             <>
-              <strong
-                css={`
-                  margin-right: ${1 * GU}px;
-                `}
-              >
-                {profile?.name
-                  ? profile.name
-                  : shortenAddress(proposal.creator)}
-              </strong>
+            <Link
+              href={`/#/profile?account=${proposal.creator}`}
+              external={false}
+              css={`
+                text-decoration: none;
+              `}
+            >
+                <strong
+                  css={`
+                    margin-right: ${1 * GU}px;
+                    cursor: pointer;
+                  `}
+                >
+                  {profile?.name
+                    ? profile.name
+                    : shortenAddress(proposal.creator)}
+                </strong>
+              </Link>
               <span
                 css={`
                   margin-right: ${0.5 * GU}px;
